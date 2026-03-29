@@ -1,67 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Omi Connect — Tesla</title>
-  
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    :root{--red:#E82127;--red-dim:rgba(232,33,39,.1);--red-glow:rgba(232,33,39,.3);--green:#22C55E;--green-dim:rgba(34,197,94,.1);--white:#F0F0ED;--muted:#5a5a5a;--dark:#080808;--card:#101010;--border:rgba(255,255,255,.06)}
-    body{background:var(--dark);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-    body::before{content:'';position:fixed;width:800px;height:800px;background:radial-gradient(circle,var(--red-glow) 0%,transparent 65%);top:-300px;left:50%;transform:translateX(-50%);pointer-events:none;animation:breathe 8s ease-in-out infinite;opacity:.3}
-    @keyframes breathe{0%,100%{opacity:.3;transform:translateX(-50%) scale(1)}50%{opacity:.5;transform:translateX(-50%) scale(1.1)}}
-    .wrap{position:relative;z-index:1;width:100%;max-width:400px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;position:relative}
-    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
-    .inner{padding:36px 28px 32px;display:flex;flex-direction:column;align-items:center}
-    .logo{width:60px;height:60px;background:#161616;border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
-    h1{font-family:'Syne',sans-serif;font-size:clamp(26px,6vw,34px);font-weight:800;letter-spacing:-.02em;text-align:center;line-height:1.1;margin-bottom:10px}
-    h1 .r{color:var(--red)} h1 .g{color:var(--green)}
-    .sub{font-size:14px;color:var(--muted);text-align:center;line-height:1.65;font-weight:300;margin-bottom:28px;max-width:290px}
-    .wake{width:100%;background:#161616;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:24px}
-    .wake-label{font-size:10px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-    .wake-ex{font-size:13px;display:flex;align-items:center;gap:10px;margin-top:7px}
-    .wake-ex .kw{color:var(--red);font-weight:500} .wake-ex .cmd{color:var(--white)}
-    .div{width:100%;height:1px;background:var(--border);margin-bottom:24px}
-    .btn{width:100%;padding:16px;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:transform .15s,box-shadow .2s;position:relative;overflow:hidden}
-    .btn-red{background:var(--red);color:#fff}
-    .btn-red:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--red-glow)}
-    .btn-green{background:var(--green);color:#0a1a0f}
-    .trust{margin-top:14px;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:5px}
-    .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
-    .badge-ok{background:var(--green-dim);border:1px solid rgba(34,197,94,.3);color:var(--green)}
-    .badge-err{background:var(--red-dim);border:1px solid rgba(232,33,39,.3);color:var(--red)    .badge-err{background:var(-;border-radius:50%;background:currentColor;animation:blink 2s infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-    .car-card{width:100%;background:#161616;border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px;margin-bottom:24px;display:flex;align-items:center;gap:12px}
-    .car-icon{width:40px;height:40px;background:var(--green-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-    .car-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
-    .car-sub{font-size:11px;color:var(--muted);margin-top:2px}
-    .v-list{width:100%;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
-    .v-item{background:#161616;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .2s}
-    .v-item:hover,.v-item.sel{border-color:var(--red);background:var(--red-dim)}
-    .v-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
-    .v-vin{font-size:11px;color:var(--muted);margin-top:2px}
-    .v-check{width:18px;height:18px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-    .v-item.sel .v-check{opacity:1}
-    .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Omi Connect - Tesla</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080808;color:#F0F0ED;font-family:system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:400px}
+.card{background:#101010;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:40px 28px;display:flex;flex-direction:column;align-items:center}
+.logo{width:60px;height:60px;background:#161616;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+h1{font-size:30px;font-weight:800;text-align:center;line-height:1.1;margin-bottom:10px}
+.r{color:#E82127}.g{color:#22C55E}
+.sub{font-size:14px;color:#666;text-align:center;line-height:1.6;margin-bottom:28px}
+.wake{width:100%;background:#161616;border-radius:12px;padding:14px 16px;margin-bottom:24px}
+.wl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#555;margin-bottom:10px}
+.we{font-size:13px;display:flex;gap:10px;margin-top:7px}
+.kw{color:#E82127;font-weight:600}
+.div{width:100%;height:1px;background:rgba(255,255,255,.06);margin-bottom:24px}
+.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:#E82127;color:#fff}
+.btn:hover{opacity:.9}
+.trust{margin-top:14px;font-size:11px;color:#444;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22C55E}
+.err{background:rgba(232,33,39,.1);border:1px solid rgba(232,33,39,.3);color:#E82127}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.car{width:100%;background:#161616;border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.ci{width:40px;height:40px;background:rgba(34,197,94,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.cn{font-size:15px;font-weight:700}
+.cs{font-size:11px;color:#555;margin-top:2px}
+</style>
 </head>
 <body>
-<div class="wrap"><div class="card"><div class="inner" id="app"></div></div></div>
+<div class="wrap"><div class="card" id="app"></div></div>
 <script>
-const p=new URLSearchParams(location.search);
-const status=p.get('status'),uid=p.get('uid'),vehicle=p.get('vehicle'),msg=p.get('msg'),vRaw=p.get('v'),tRaw=p.get('t');
-const el=document.getElementById('app');
-function logo(){return`<div class="logo"><svg width="32" height="32" viewBox="0 0 100 100" fill="none"><path d="M50 22L50 78M28 22L72 22M28 15Q50 20 72 15" stroke="#E82127" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="50" r="4" fill="white" opacity="0.35"/><circle cx="80" cy="50" r="4" fill="white" opacity="0.35"/></svg></div>`}
-function setup(){el.innerHTML=`${logo()}<h1>Control Your<br/><span class="r">Tesla</span> by Voice</h1><p class="sub">Wear Omi. Say "Tesla" then your command. Your car responds instantly.</p><div class="wake"><div class="wake-label">Say it like this</div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">unlock my car</span></div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">open the trunk</span></div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">start climate</span></div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">start charging</span></div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">my hands are full</span></div></div><div class="div"></div><a id="cta" class="btn btn-red" href="${uid?`/api/auth/tesla?uid=${uid}`:'#'}">Connect Your Tesla</a><div class="trust">Tesla OAuth · credentials never stored</div>`;if(!uid){const c=document.getElementById('cta')c.style.opacity='.4';c.style.pointerEvents='none';}}
-function success(){const name=vehicle?decodeURIComponent(vehicle):'Your Tesla';el.innerHTML=`${logo()}<div class="badge badge-ok"><span class="dot"></span>Connected</div><h1>Ready to roll,<br/><span class="g">let's go.</span></h1><p class="sub">Say "Tesla" followed by any command. Your car responds instantly.</p><div class="car-card"><div class="car-icon">🚗</div><div><div class="car-name">${name}</div><div class="car-sub">Linked via Tesla Fleet API · Active</div></div></div><div class="wake"><div class="wake-label"> right now</div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">unlock my car</span></div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">open the trunk</span></div><div class="wake-ex"><span class="kw">Tesla,</span><span class="cmd">start climate</span></div></div><div class="div"></div><div class="trust">Omi Connect is listening for Tesla commands</div>`;}
-function error(){el.innerHTML=`${logo()}<div class="badge badge-err"><span class="dot"></span>Failed</div><h1>Something<br/><span class="r">went wrong</span></h1><p class="sub">${msg?decodeURIComponent(msg):'Authentication failed.'}</p><div class="div"></div><a class="btn btn-red" href="${uid?`/api/auth/tesla?uid=${uid}`:'/'}" >Try Again</a>`;}
-function picker(){let vehicles,tokenData;try{vehicles=JSON.parse(decodeURIComponent(vRaw));tokenData=JSON.parse(decodeURIComponent(tRaw));}catch{return error();}let sel=null;el.innerHTML=`${logo()}<h1>Pick Your<br/><span class="r">Tesla</span></h1><p class="sub">Multiple vehicles found. Choose which one Omi controls.</p><div class="v-list">${vehicles.map(v=>`<div class="v-item" data-vin="${v.vin}" data-name="${v.name}" onclick="pick(this)"><div><div class="v-name">${v.name}</div><div class="v-vin">VIN ···${v.vin.slice(-6)}</div></div><div ss="v-check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="white" stroke-width="2.5function picker(){let vehicles,tokenData;try{vehicles=J}</div><button class="btn btn-red" id="selBtn" disabled onclick="confirm()">Connect This Tesla</button>`;
-window.pick=(item)=>{document.querySelectorAll('.v-item').forEach(i=>i.classList.remove('sel'));item.classList.add('sel');sel={vin:item.dataset.vin,name:item.dataset.name};document.getElementById('selBtn').disabled=false;};
-window.confirm=async()=>{if(!sel)return;const btn=document.getElementById('selBtn');btn.innerHTML='<div class="spin"></div>';btn.disabled=true;try{const r=await fetch('/api/auth/select',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...tokenData,vin:sel.vin,vehicle_name:sel.name})});if(r.ok)location.href=`/?status=success&vehicle=${encodeURIComponent(sel.name)}`;else throw new Error();}catch{btn.textContent='Error — Try Again';btn.disabled=false;}};}
-if(status==='success')success(else if(status==='error')error();else if(status==='pick'&&vRaw)picker();else setup();
+var p=new URLSearchParams(location.search);
+var status=p.get('status'),uid=p.get('uid'),vehicle=p.get('vehicle'),msg=p.get('msg');
+var el=document.getElementById('app');
+
+function logo(){
+  return '<div class="logo"><svg width="32" height="32" viewBox="0 0 100 100" fill="none"><path d="M50 22L50 78M28 22L72 22M28 15Q50 20 72 15" stroke="#E82127" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="50" r="4" fill="white" opacity="0.35"/><circle cx="80" cy="50" r="4" fill="white" opacity="0.35"/></svg></div>';
+}
+
+function setup(){
+  var href = uid ? '/auth/tesla?uid='+uid : '#';
+  el.innerHTML = logo()+
+    '<h1>Control Your<br><span class="r">Tesla</span> by Voice</h1>'+
+    '<p class="sub">Wear Omi. Say Tesla then your command. Your car responds instantly.</p>'+
+    '<div class="wake">'+
+      '<div class="wl">Say it like this</div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>unlock my car</span></div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>open the trunk</span></div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>start climate</span></div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>start cha      '<div class="we"><span class="kw">Tesla,<ass="div"></div>'+
+    '<a class="btn" href="'+href+'">Connect Your Tesla</a>'+
+    '<div class="trust">Tesla OAuth - credentials never stored</div>';
+}
+
+function success(){
+  var name = vehicle ? decodeURIComponent(vehicle) : 'Your Tesla';
+  el.innerHTML = logo()+
+    '<div class="badge ok"><span class="dot"></span>Connected</div>'+
+    '<h1>Ready,<br><span class="g">lets go.</span></h1>'+
+    '<p class="sub">Say Tesla followed by any command. Your car responds instantly.</p>'+
+    '<div class="car"><div class="ci">Car</div><div><div class="cn">'+name+'</div><div class="cs">Linked via Tesla Fleet API</div></div></div>'+
+    '<div class="wake">'+
+      '<div class="wl">Try right now</div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>unlock my car</span></div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>open the trunk</span></div>'+
+      '<div class="we"><span class="kw">Tesla,</span><span>start climate</span></div>'+
+    '</div>'+
+    '<div class="div"></div>'+
+    '<div class="trust">Omi Connect is listening for Tesla commands</div>';
+}
+
+function error(){
+  var m = msg ? decodeURIComponent(msg) : 'Authentication failed.';
+  var href = uid ? '/auth/tesla?uid='+uid : '/';
+  el.innerHTML = logo()+
+    '<div class="badge err"><span class="dot"></span>Failed</div>'+
+    '<h1>Something<br><span class="r">went wrong</span></h1>'+
+    '<p class="sub">'+m+'</p>'+
+    '<div class="div"></div>'+
+    '<a class="btn" href="'+href+'">Try Again</a>';
+}
+
+if(status==='success') success();
+else if(status==='error') error();
+else setup();
 </script>
 </body>
 </html>
