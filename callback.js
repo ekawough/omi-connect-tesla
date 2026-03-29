@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const APP_URL = process.env.APP_URL;
   if (error || !code || !uid) return res.redirect(`${APP_URL}/?status=error&msg=${encodeURIComponent(error || 'Auth failed')}`);
   try {
-    const tokenRes = await axios.post('https://auth.tesla.com/oauth2/v3/token', {
+    const tokenRes = await axios.post('https://fleet-auth.prd.vn.cloud.tesla.com/oauth2/v3/token', {
       grant_type: 'authorization_code',
       client_id: process.env.TESLA_CLIENT_ID,
       client_secret: process.env.TESLA_CLIENT_SECRET,
