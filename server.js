@@ -150,6 +150,7 @@ app.post('/webhook', async (req, res) => {
   if (!hasTeslaWakeWord(fullText)) return;
   const commandText = stripWakeWord(fullText);
   if (!commandText) return;
+  notify(uid, '⚡ On it...');
   console.log('[wake] uid=' + uid + ' | "' + fullText + '"');
   try {
     let commandName = null;
@@ -203,5 +204,19 @@ app.get('/setup-check', async (req, res) => {
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', uptime: Math.floor(process.uptime()), version: '2.0.0' });
 });
+
+setInterval(async function() {
+  try {
+    const { data } = await supabase.from('tesla_sessions').select('uid,access_token,vin');
+    if (!data) return;
+    for (const s of data) {
+      try {
+        await axios.post(VCP_PROXY + '/api/1/vehicles/' + s.vin + '/wake_up', {}, {
+          headers: { Authorization: 'Bearer ' + s.access_token }, timeout: 8000
+        });
+      } catch(e) {}
+    }
+  } catch(e) {}
+}, 600000);
 
 app.listen(PORT, function() { console.log('Omi Connect Tesla running on :' + PORT); });
