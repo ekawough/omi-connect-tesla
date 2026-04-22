@@ -73,7 +73,7 @@ async function detectIntent(text) {
   const res = await axios.post(
     'https://api.anthropic.com/v1/messages',
     {
-      model: 'claude-haiku-4-5',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 100,
       system: 'Tesla voice command detector. Respond ONLY with JSON.\nIf command detected: {"cmd":"COMMAND","params":{},"msg":"Short confirmation."}\nIf unclear: {"cmd":null}\nCommands: door_unlock, door_lock, actuate_trunk (params: {"which_trunk":"rear"} or {"which_trunk":"front"}), auto_conditioning_start, auto_conditioning_stop, charge_start, charge_stop, charge_port_door_open, charge_port_door_close, flash_lights, honk_horn\nContext: hands full/approaching=door_unlock, leaving=door_lock, loading bags=actuate_trunk rear, hot/cold=auto_conditioning_start, cant find car=flash_lights',
       messages: [{ role: 'user', content: '"' + text + '"' }],
